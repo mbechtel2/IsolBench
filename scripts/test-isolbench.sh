@@ -13,9 +13,9 @@ test_latency_vs_bandwidth()
 #    [ -z "$CG_PALLOC_DIR" ] && error "CG_PALLOC_DIR is not set"
 
     endcpu=`expr $startcpu + 3`
-    
+
     log_echo "latency($size_in_kb_subject) bandwidth_$acc_type ($size_in_kb_corun)"
-    
+
     for cpu in `seq $startcpu $endcpu`; do
         if [ $cpu -ne $startcpu ]; then
             # launch a co-runner
@@ -28,11 +28,11 @@ test_latency_vs_bandwidth()
         # launch a subject
 	[ -d "$CG_PALLOC_DIR" ] && echo $$ > $CG_PALLOC_DIR/subject/tasks
 	latency -m $size_in_kb_subject -c $startcpu -i 10000 -r 1 2> /dev/null > tmpout.txt
-	    
+
         output=`grep average tmpout.txt | awk '{ print $2 }'`
 	log_echo $output
     # cleanup >& /dev/null
-    done	
+    done
     cleanup >& /dev/null
 }
 
@@ -45,12 +45,12 @@ test_bandwidth_vs_bandwidth()
     [ -z "$acc_type" -o -z "$size_in_kb_corun" ] && error "size_in_kb_corun or acc_type is not set"
     [ -z "$startcpu" ] && startcpu=0
 #    [ -z "$CG_PALLOC_DIR" ] && error "CG_PALLOC_DIR is not set"
-    
+
     endcpu=`expr $startcpu + 3`
 
     log_echo "bandwidth_read ($size_in_kb_subject) bandwidth_$acc_type ($size_in_kb_corun)"
 
-    for cpu in `seq $startcpu $endcpu`; do 
+    for cpu in `seq $startcpu $endcpu`; do
         if [ $cpu -ne $startcpu ]; then
             # launch a co-runner
 	    [ -d "$CG_PALLOC_DIR" ] && echo $$ > $CG_PALLOC_DIR/core$cpu/tasks
@@ -64,7 +64,7 @@ test_bandwidth_vs_bandwidth()
         bandwidth -m $size_in_kb_subject -t 4 -c $startcpu -r 1 2> /dev/null > tmpout.txt
         output=`grep average tmpout.txt | awk '{ print $10 }'`
 	log_echo $output
-    done	
+    done
     cleanup >& /dev/null
 }
 
@@ -96,7 +96,7 @@ fi
 
 if grep "0xc0f" /proc/cpuinfo; then
     # cortex-a15
-    llc_ws=96
+    llc_ws=48
     dram_ws=4096
 elif grep "0xc09" /proc/cpuinfo; then
     # cortex-a9
@@ -129,9 +129,9 @@ outputfile=log.txt
 startcpu=$1
 [ -z "$startcpu" ] && startcpu=0
 
-test_latency_vs_bandwidth $dram_ws "read" $startcpu
+#test_latency_vs_bandwidth $dram_ws "read" $startcpu
 test_bandwidth_vs_bandwidth $dram_ws "read" $startcpu
-test_bandwidth_vs_bandwidth $llc_ws "read" $startcpu
-test_latency_vs_bandwidth $dram_ws "write" $startcpu
+#test_bandwidth_vs_bandwidth $llc_ws "read" $startcpu
+#test_latency_vs_bandwidth $dram_ws "write" $startcpu
 test_bandwidth_vs_bandwidth $dram_ws "write" $startcpu
-test_bandwidth_vs_bandwidth $llc_ws "write" $startcpu
+#test_bandwidth_vs_bandwidth $llc_ws "write" $startcpu
