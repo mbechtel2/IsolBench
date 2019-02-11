@@ -78,7 +78,7 @@ print_env()
 
 cleanup >& /dev/null
 
-if [ -d "/sys/kernel/debug/palloc" ]; then
+if [ -d "/sys/kernel/debug/palloc_" ]; then
     echo "This kernel supports PALLOC. initialize."
     echo flush > /sys/kernel/debug/palloc/control
 
