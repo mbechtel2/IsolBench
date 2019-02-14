@@ -32,6 +32,8 @@ set_palloc_config()
     echo "initialize palloc configuration."
     if grep "W3530" /proc/cpuinfo; then
 	PALLOC_MASK=0x00018000   # bank bits: 15,16 (works for Intel Nehalem)
+    elif grep "0xd03" /proc/cpuinfo; then
+    PALLOC_MASK=0x00006000   # bank bits: 12,13 (works for Cortex-A53)
     else
 	PALLOC_MASK=0x0000C000   # bank bits: 14,15 (works for both Cortex-A15, and Cortex-A7)
     fi
