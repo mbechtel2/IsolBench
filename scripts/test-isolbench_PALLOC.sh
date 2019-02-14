@@ -56,14 +56,14 @@ test_bandwidth_vs_bandwidth()
 	    [ -d "$CG_PALLOC_DIR" ] && echo $$ > $CG_PALLOC_DIR/core$cpu/tasks
 	    bandwidth -m $size_in_kb_corun -c $cpu -t 1000000 -a $acc_type >& /dev/null &
 	    sleep 2
-	    print_allocated_colors bandwidth
+	    #print_allocated_colors bandwidth
         fi
 
         # launch a subject
 	[ -d "$CG_PALLOC_DIR" ] && echo $$ > $CG_PALLOC_DIR/subject/tasks
-        perf stat -e LLC-load-misses:u,LLC-loads:u bandwidth -m $size_in_kb_subject -t 4 -c $startcpu -r 1 2> /dev/null > tmpout.txt
+        perf stat -e LLC-load-misses:u,LLC-loads:u bandwidth -m $size_in_kb_subject -t 4 -c $startcpu -r 1 #2> /dev/null > tmpout.txt
         output=`grep average tmpout.txt | awk '{ print $10 }'`
-	log_echo $output
+	#log_echo $output
     done
     cleanup >& /dev/null
 }

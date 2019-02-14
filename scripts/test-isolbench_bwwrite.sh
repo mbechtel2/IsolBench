@@ -61,9 +61,9 @@ test_bandwidth_vs_bandwidth()
 
         # launch a subject
 	[ -d "$CG_PALLOC_DIR" ] && echo $$ > $CG_PALLOC_DIR/subject/tasks
-        perf stat -e rc2:u,LLC-loads:u bandwidth -m $size_in_kb_subject -t 4 -c $startcpu -r 1 #2> /dev/null > tmpout.txt
+        bandwidth -m $size_in_kb_subject -t 4 -c $startcpu -r 1 2> /dev/null > tmpout.txt
         output=`grep average tmpout.txt | awk '{ print $10 }'`
-	#log_echo $output
+	log_echo $output
     done
     cleanup >& /dev/null
 }
@@ -134,7 +134,7 @@ startcpu=$1
 [ -z "$startcpu" ] && startcpu=0
 
 #test_latency_vs_bandwidth $dram_ws "read" $startcpu
-test_bandwidth_vs_bandwidth $dram_ws "read" $startcpu
+#test_bandwidth_vs_bandwidth $dram_ws "read" $startcpu
 #test_bandwidth_vs_bandwidth $llc_ws "read" $startcpu
 #test_latency_vs_bandwidth $dram_ws "write" $startcpu
 test_bandwidth_vs_bandwidth $dram_ws "write" $startcpu
